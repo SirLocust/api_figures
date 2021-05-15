@@ -9,6 +9,7 @@ import com.interview.api.services.FigureService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 
 @RestController
+
 @RequestMapping(value = "/figure")
 @AllArgsConstructor
 public class FigureController {
@@ -29,6 +31,16 @@ public class FigureController {
   @GetMapping
   public ResponseEntity<Map<String, Object>> listFigures() {
     List<Figure> figuresDb = this.figureService.getAllFigures();
+    Map<String, Object> body = new HashMap<>();
+    body.put("data", figuresDb);
+    body.put("message", "Lista generada con exito");
+    body.put("errors", null);
+    return ResponseEntity.ok(body);
+  }
+
+  @GetMapping(value = "/group/{id}")
+  public ResponseEntity<Map<String, Object>> listFiguresByIdGroup(@PathVariable("id") Long id) {
+    List<Figure> figuresDb = this.figureService.getAllFiguresByIdGroupFigures(id);
     Map<String, Object> body = new HashMap<>();
     body.put("data", figuresDb);
     body.put("message", "Lista generada con exito");
